@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn"
-	xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
-	xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema"
-	expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
 
-	<process id="my-process">
+    <process id="my-process">
 
-		<startEvent id="start" />
-		<sequenceFlow id="flow1" sourceRef="start" targetRef="someTask" />
-		
-		<userTask id="someTask" name="Activiti is awesome!" />
-		<sequenceFlow id="flow2" sourceRef="someTask" targetRef="end" />
+        <startEvent id="start" />
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="firstTask" />
 
-		<endEvent id="end" />
+        <serviceTask id="firstTask" name="Activiti is awesome! 1" activiti:delegateExpression="${syncTask}" />
+        <sequenceFlow id="flow2" sourceRef="firstTask" targetRef="secondTask" />
 
-	</process>
+        <serviceTask id="secondTask" name="Activiti is awesome! 2" activiti:async="true" activiti:delegateExpression="${asyncTask}" />
+        <sequenceFlow id="flow3" sourceRef="secondTask" targetRef="thirdTask" />
 
+        <serviceTask id="thirdTask" name="Activiti is awesome! 3" activiti:async="true" activiti:delegateExpression="${asyncTask}" />
+        <sequenceFlow id="flow4" sourceRef="thirdTask" targetRef="fourthTask" />
+
+    
+        <serviceTask id="fourthTask" name="Activiti is awesome! 4" activiti:delegateExpression="${syncTask}" />
+        <sequenceFlow id="flow5" sourceRef="fourthTask" targetRef="fifthTask" />
+
+    
+        <serviceTask id="fifthTask" name="Activiti is awesome! 5" activiti:delegateExpression="${syncTask}" />
+        <sequenceFlow id="flow6" sourceRef="fifthTask" targetRef="sixthTask" />
+
+        <serviceTask id="sixthTask" name="Activiti is awesome! 6" activiti:delegateExpression="${syncTask}" />
+        <sequenceFlow id="flow7" sourceRef="sixthTask" targetRef="end" />
+    
+
+        <endEvent id="end" />
+    </process>
 </definitions>
